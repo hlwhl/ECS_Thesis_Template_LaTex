@@ -1,0 +1,12 @@
+\begin{thebibliography}{1}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{{\tt #1}}\fi
+
+\bibitem[Gunn(2001)]{Gunn:2001:pdflatex}
+S.R. Gunn.
+\newblock
+  \href{http://www.ecs.soton.ac.uk/~srg/softwaretools/document/}{Pdflatex
+  instructions}, 2001.
+
+\end{thebibliography}

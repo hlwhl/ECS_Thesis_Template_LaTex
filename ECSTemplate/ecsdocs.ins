@@ -1,0 +1,91 @@
+% This file requires docstrip version 2.4 available from
+% ftp.dante.de tex-archive/macros/latex/unpacked/docstrip.tex
+
+\input docstrip.tex
+
+\preamble
+
+Copyright (C) 2001 by Steve R. Gunn
+
+This file is part of the ECSDocs class distribution
+
+\endpreamble
+\edef\eps{\perCent!PS-Adobe-3.0^^J%
+          \DoubleperCent Title: \outFileName^^J%
+          \DoubleperCent Creator: ECSThesis.dtx
+}
+\edef\tex{\DoubleperCent\space ----------------------------------------------------------------^^J%
+          \DoubleperCent\space\outFileName^^J%
+          \DoubleperCent\space ----------------------------------------------------------------
+}
+\edef\bib{\DoubleperCent\space ----------------------------------------------------------------^^J%
+          \DoubleperCent\space\outFileName^^J%
+          \DoubleperCent\space ----------------------------------------------------------------
+}
+\edef\bst{\DoubleperCent\space ----------------------------------------------------------------^^J%
+          \DoubleperCent\space\outFileName^^J%
+          \DoubleperCent\space ----------------------------------------------------------------
+}
+
+\usedir{tex/latex/ecsdocs}
+\keepsilent
+\askforoverwritefalse
+
+\Msg{*** Generating thesis, minithesis and project class files ***}
+
+\generate{\file{ecsthesis.cls}      {\from{ecsdocs.dtx}{thesis}}
+          \file{ecsminithesis.cls}  {\from{ecsdocs.dtx}{minithesis}}
+          \file{ecsprogress.cls}    {\from{ecsdocs.dtx}{progress}}
+          \file{ecsproject.cls}     {\from{ecsdocs.dtx}{project}}
+          \file{ecsreport.cls}      {\from{ecsdocs.dtx}{report}}
+          \file{ecsarticle.cls}     {\from{ecsdocs.dtx}{article}}
+          \file{ecsgdp.cls}         {\from{ecsdocs.dtx}{gdp}}
+          \file{ecsgdpsummary.cls}  {\from{ecsdocs.dtx}{gdpsummary}}
+          \file{Thesis.tex}         {\usepreamble\tex
+                                     \nopostamble
+                                     \from{ecsdocs.dtx}{testthesis}}
+          \file{MiniThesis.tex}     {\usepreamble\tex
+                                     \nopostamble
+                                     \from{ecsdocs.dtx}{testminithesis}}
+          \file{Progress.tex}       {\usepreamble\tex
+                                     \nopostamble
+                                     \from{ecsdocs.dtx}{testprogress}}
+          \file{Project.tex}        {\usepreamble\tex
+                                     \nopostamble
+                                     \from{ecsdocs.dtx}{testproject}}
+          \file{Report.tex}         {\usepreamble\tex
+                                     \nopostamble
+                                     \from{ecsdocs.dtx}{testreport}}
+          \file{Article.tex}        {\usepreamble\tex
+                                     \nopostamble
+                                     \from{ecsdocs.dtx}{testarticle}}
+          \file{GDP.tex}            {\usepreamble\tex
+                                     \nopostamble
+                                     \from{ecsdocs.dtx}{testgdp}}
+          \file{GDPSummary.tex}     {\usepreamble\tex
+                                     \nopostamble
+                                     \from{ecsdocs.dtx}{testgdpsummary}}
+          \file{Introduction.tex}   {\usepreamble\tex
+                                     \nopostamble
+                                     \from{ecsdocs.dtx}{introduction}}
+          \file{Conclusions.tex}    {\usepreamble\tex
+                                     \nopostamble
+                                     \from{ecsdocs.dtx}{conclusions}}
+          \file{AppendixA.tex}      {\usepreamble\tex
+                                     \nopostamble
+                                     \from{ecsdocs.dtx}{appendix}}
+          \file{figure.eps}         {\usepreamble\eps
+                                     \nopostamble
+                                     \from{ecsdocs.dtx}{figure}}
+          \file{Definitions.tex}    {\usepreamble\tex
+                                     \nopostamble
+                                     \from{ecsdocs.dtx}{definitions}}
+          \file{ECS.bib}            {\usepreamble\bib
+                                     \nopostamble
+                                     \from{ecsdocs.dtx}{references}}
+          \file{ecs.bst}            {\usepreamble\bst
+                                     \nopostamble
+                                     \from{ecsdocs.dtx}{bst}}
+         }
+
+\endbatchfile

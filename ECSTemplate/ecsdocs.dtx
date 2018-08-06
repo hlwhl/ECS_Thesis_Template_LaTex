@@ -1,0 +1,2980 @@
+% \iffalse
+% This file builds on the class file `book.cls' to provide a thesis,
+% minithesis, progress, project and report format, and on the class file `article.cls'
+% to provide an article format, for use within the Dept. of Electronics
+% and Computer Science at the University of Southampton.
+%
+% The thesis, minithesis, progress, project, report, gdp, gdpsummary and article environments are written to separate
+% class files ecsthesis.cls, ecsminithesis.cls, ecsprogress.cls, ecsproject.cls, ecsreport.cls, ecsgdp.cls, ecsgdpsummary.cls and ecsarticle.cls.
+% \fi
+%
+% \CheckSum{1773}
+%
+% \iffalse
+% Copyright (C) 2001 by Steve R. Gunn
+%
+%    \begin{macrocode}
+%<thesis|minithesis|progress|project|article|report|gdp|gdpsummary>\NeedsTeXFormat{LaTeX2e}[1996/12/01]
+%    \end{macrocode}
+%
+%    Announce the document class and its version.
+%
+%    \begin{macrocode}
+%<thesis>\ProvidesClass{ecsthesis}
+%<minithesis>\ProvidesClass{ecsminithesis}
+%<progress>\ProvidesClass{ecsprogress}
+%<project>\ProvidesClass{ecsproject}
+%<article>\ProvidesClass{ecsarticle}
+%<report>\ProvidesClass{ecsreport}
+%<gdp>\ProvidesClass{ecsgdp}
+%<gdpsummary>\ProvidesClass{ecsgdpsummary}
+%<*driver>
+\ProvidesFile{ecsdocs.drv}
+%</driver>
+%<*thesis|minithesis|progress|project|report|article|gdp|gdpsummary|driver>
+              [2003/25/04 v1.6
+%</thesis|minithesis|progress|project|report|article|gdp|gdpsummary|driver>
+%<thesis|minithesis|progress|project|report|article|gdp|gdpsummary>   LaTeX document class]
+%    \end{macrocode}
+%
+%    This bit of code contains the documentation driver file for
+%    \TeX{}, i.e., the file that will produce the documentation you
+%    are currently reading. It can be extracted from this file by the
+%    {\sc docstrip} program.
+%    \begin{macrocode}
+%<*driver>
+]
+\documentclass[a4paper,10pt]{ltxdoc}
+\GetFileInfo{ecsdocs.drv} \CodelineIndex \EnableCrossrefs
+%\RecordChanges
+\setcounter{IndexColumns}{2}
+\begin{document}
+\DocInput{ecsdocs.dtx}
+\PrintIndex
+%\PrintChanges
+\end{document}
+%</driver>
+%    \end{macrocode}
+% \fi
+%
+% \title{\LaTeXe{} Document Styles for the\\
+%        Department of Electronics and Computer Science\\
+%       {File version \fileversion, dated \filedate}}
+%
+% \author{Steve R. Gunn}
+%
+% \date{Printed \today}
+%
+% \maketitle
+%
+% \section{Description}
+%
+%    These \LaTeXe{} document classes are designed to produce thesis, mini-thesis, progress,
+%    project, report, GDP report and GDP summary report documents which conform to the
+%    University of Southampton guidelines of April 2001. They are based on the document
+%    class \texttt{book}, but modify some of its layout decisions. An article class is also
+%    provided which is based on the document class \texttt{article}.
+%
+% \StopEventually{}
+%
+% \section{The {\sc docstrip} modules}
+%
+% The following modules are used in the implementation to direct
+% {\sc docstrip} when generating the external files:
+% \begin{center}
+% \begin{tabular}{ll}
+%   thesis            & produce the \texttt{ecsthesis} document class\\
+%   minithesis        & produce the \texttt{ecsminithesis} document class\\
+%   progress          & produce the \texttt{ecsprogress} document class\\
+%   project           & produce the \texttt{ecsproject} document class\\
+%   report            & produce the \texttt{ecsreport} document class\\
+%   article           & produce the \texttt{ecsarticle} document class\\
+%   gdp               & produce the \texttt{ecsgdp} document class\\
+%   gdpsummary        & produce the \texttt{ecsgdpsummary} document class\\
+%   testthesis        & produce an example thesis\\
+%   testminithesis    & produce an example minithesis\\
+%   testprogress      & produce an example progress\\
+%   testproject       & produce an example project\\
+%   testreport        & produce an example report\\
+%   testarticle       & produce an example article\\
+%   testgdp           & produce an example GDP report\\
+%   testgdpsummary    & produce an example GDP summary report\\
+%   introduction      & produce an example introduction chapter\\
+%   conclusions       & produce an example conclusions chapter\\
+%   appendix          & produce an example appendix chapter\\
+%   figure            & produce an example figure file\\
+%   definitions       & produce an example definitions file\\
+%   references        & produce an example references file\\
+%   bst               & produce a bibliography style file\\
+%   driver            & produce a documentation driver file \\
+% \end{tabular}
+% \end{center}
+%
+% \section{Implementation}
+%
+%    All options are passed on to the \texttt{book} or \texttt{article} class.
+%
+%    \begin{macrocode}
+%<*thesis|minithesis|progress|project|report|article|gdp|gdpsummary>
+%    \end{macrocode}
+%
+% \begin{macro}{\baseclass}
+%    \begin{macrocode}
+%<*thesis|minithesis|progress|project|report|gdp|gdpsummary>
+\def\baseclass{book}
+%</thesis|minithesis|progress|project|report|gdp|gdpsummary>
+%<*article>
+\def\baseclass{article}
+%</article>
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{\baseclass}}
+%    \end{macrocode}
+%
+% \begin{macro}{\@checkoptions}
+%
+%    Before we can process the options we must deal with a small
+%    problem.  That is, we want to change the default options of
+%    the \texttt{book} or \texttt{article} class to \texttt{a4paper} and \texttt{11pt} or \texttt{12pt} but the
+%    macro |\ProcessOptions| used by the \texttt{book} or \texttt{article} class
+%    processes the options in the order specified in the
+%    file.  Because \texttt{a4paper} is the first of the paper
+%    sizing options it will be overridden by any user defined
+%    option.  But the same is not true of the font size option
+%    \texttt{11pt} or \texttt{12pt}.  To remedy this we define a macro
+%    |\@checkoptions{|\meta{default}|}{|\meta{option-list}|}|
+%    which checks to see if any options in \meta{option-list} have
+%    been specified and if not adds \meta{default} to the option list.
+%
+%    \begin{macrocode}
+\def\@checkoptions#1#2{
+  \edef\@curroptions{\@ptionlist{\@currname.\@currext}}
+  \@tempswafalse
+  \@tfor\@this:=#2\do{
+    \@expandtwoargs\in@{,\@this,}{,\@curroptions,}
+    \ifin@ \@tempswatrue \@break@tfor \fi}
+  \let\@this\@empty
+  \if@tempswa \else \PassOptionsToClass{#1}{\baseclass}\fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%    With this macro at our disposal we can continue to
+%    process the options
+%
+%    \begin{macrocode}
+%<*thesis|minithesis|progress|report|article|gdp|gdpsummary>
+\@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+%</thesis|minithesis|progress|report|article|gdp|gdpsummary>
+%<*project>
+\@checkoptions{12pt}{{10pt}{11pt}{12pt}}
+%</project>
+\PassOptionsToClass{a4paper}{\baseclass}
+\ProcessOptions\relax
+%    \end{macrocode}
+%
+%    and load the \texttt{book} or \texttt{article} document class
+%    with A4 as the default paper size.
+%
+%    \begin{macrocode}
+\LoadClass{\baseclass}
+%    \end{macrocode}
+%
+% \subsection{Banner}
+%
+% \begin{macro}{\bhrule}
+% \begin{macro}{\btypeout}
+%
+%    Provide a function to produce a banner on the output making the location
+%    of the current section simpler.
+%
+%    \begin{macrocode}
+\newcommand\bhrule{\typeout{------------------------------------------------------------------------------}}
+\newcommand\btypeout[1]{\bhrule\typeout{\space #1}\bhrule}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \subsection{Date}
+%
+% \begin{macro}{\today}
+%
+%    This macro uses the \TeX\ primitives |\month|, |\day| and |\year|
+%    to provide the date of the \LaTeX-run in a suitable format.
+%
+%    \begin{macrocode}
+%<*thesis>
+\def\today{\ifcase\month\or
+  January\or February\or March\or April\or May\or June\or
+  July\or August\or September\or October\or November\or December\fi
+  \space \number\year}
+%</thesis>
+%    \end{macrocode}
+%
+% \end{macro}
+%
+% \section{Document Layout}
+%
+% \subsection{Spacing}
+%
+%    Load the \texttt{setspace} package so that spacing can easily be set. The text in all
+%    three styles is set to one and a half spacing, paragraphs not indented, and a newline
+%    between paragraphs.
+%
+%    \begin{macrocode}
+\usepackage{setspace}
+%<thesis|minithesis|progress|project|report|gdp|gdpsummary>\onehalfspacing
+%<article>\singlespacing
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2.0ex plus0.5ex minus0.2ex}
+%    \end{macrocode}
+%
+%  \subsection{Margins}
+%
+%    Load the \texttt{vmargin} package to setup the page dimensions.
+%
+%    \begin{macrocode}
+\usepackage{vmargin}
+%<*thesis|minithesis|progress|project|report|gdp|gdpsummary>
+\setmarginsrb           { 1.5in}  % left margin
+                        { 0.6in}  % top margin
+                        { 1.0in}  % right margin
+                        { 0.8in}  % bottom margin
+                        {  20pt}  % head height
+                        {0.25in}  % head sep
+                        {   9pt}  % foot height
+                        { 0.3in}  % foot sep
+%</thesis|minithesis|progress|project|report|gdp|gdpsummary>
+%<*article>
+\setmarginsrb           { 0.8in}  % left margin
+                        { 0.6in}  % top margin
+                        { 0.8in}  % right margin
+                        { 0.8in}  % bottom margin
+                        {  20pt}  % head height
+                        {0.25in}  % head sep
+                        {   9pt}  % foot height
+                        { 0.3in}  % foot sep
+%</article>
+%    \end{macrocode}
+%
+% \subsection{Breaks}
+%
+%    Control how pages and lines are broken.
+%
+%    \begin{macrocode}
+\raggedbottom
+\setlength{\topskip}{1\topskip \@plus 5\p@}
+\doublehyphendemerits=10000       % No consecutive line hyphens.
+\brokenpenalty=10000              % No broken words across columns/pages.
+\widowpenalty=9999                % Almost no widows at bottom of page.
+\clubpenalty=9999                 % Almost no orphans at top of page.
+\interfootnotelinepenalty=9999    % Almost never break footnotes.
+%    \end{macrocode}
+%
+%  \subsection{Fancy Page Headers}
+%
+%    Setup the the default fancy page headers with an underlined header containing
+%    chapter, name and page number.
+%
+%    \begin{macrocode}
+\usepackage{fancyhdr}
+\lhead[\rm\thepage]{\fancyplain{}{\sl{\rightmark}}}
+\rhead[\fancyplain{}{\sl{\leftmark}}]{\rm\thepage}
+\chead{}\lfoot{}\rfoot{}\cfoot{}
+\pagestyle{fancy}
+%    \end{macrocode}
+%
+% \begin{macro}{\chaptermark}
+% \begin{macro}{\sectionmark}
+% \begin{macro}{\subsectionmark}
+%
+%    Redefine \texttt{chaptermark} and \texttt{sectionmark} to set up the correct header name and produce a
+%    banner on the output making the location of messages simpler.
+%
+%    \begin{macrocode}
+%<*thesis|minithesis|progress|project|report|gdp>
+\renewcommand{\chaptermark}[1]{\btypeout{\thechapter\space #1}\markboth{\@chapapp\ \thechapter\ #1}{\@chapapp\ \thechapter\ #1}}
+\renewcommand{\sectionmark}[1]{}
+\renewcommand{\subsectionmark}[1]{}
+%</thesis|minithesis|progress|project|report|gdp>
+%<*article>
+\renewcommand{\sectionmark}[1]{\btypeout{\thesection\space #1}}
+\renewcommand{\subsectionmark}[1]{}
+\renewcommand{\subsubsectionmark}[1]{}
+%</article>
+%<gdpsummary>\markboth{GDP Summary Report}{GDP Summary Report}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\cleardoublepage}
+%
+%    Redefine \texttt{cleardoublepage} to remove headers from blank pages
+%    in twosided documents.
+%
+%    \begin{macrocode}
+\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
+\hbox{}
+\thispagestyle{empty}
+\newpage
+\if@twocolumn\hbox{}\newpage\fi\fi\fi}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Mathematics}
+%
+%    Load the \texttt{amsmath} packages, so we can do some serious math, and
+%    setup the theorem environments.
+%
+%    \begin{macrocode}
+\usepackage{amsmath,amsfonts,amssymb,amscd,amsthm,xspace}
+\theoremstyle{plain}
+%<*thesis|minithesis|progress|project|report|gdp>
+\newtheorem{example}{Example}[chapter]
+\newtheorem{theorem}{Theorem}[chapter]
+%</thesis|minithesis|progress|project|report|gdp>
+%<*article|gdpsummary>
+\newtheorem{example}{Example}[section]
+\newtheorem{theorem}{Theorem}[section]
+%</article|gdpsummary>
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{axiom}[theorem]{Axiom}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+%    \end{macrocode}
+%
+% \subsection{Captions}
+%
+% \begin{macro}{\fref}
+% \begin{macro}{\tref}
+% \begin{macro}{\eref}
+% \begin{macro}{\cref}
+% \begin{macro}{\sref}
+% \begin{macro}{\aref}
+%
+%   Load the \texttt{caption2} package to improve formatting of captions,
+%   and provide short referencing commands.
+%
+%    \begin{macrocode}
+\usepackage[centerlast,small,sc]{caption2}
+\setlength{\captionmargin}{20pt}
+\newcommand{\fref}[1]{Figure~\ref{#1}}
+\newcommand{\tref}[1]{Table~\ref{#1}}
+\newcommand{\eref}[1]{Equation~\ref{#1}}
+\newcommand{\cref}[1]{Chapter~\ref{#1}}
+\newcommand{\sref}[1]{Section~\ref{#1}}
+\newcommand{\aref}[1]{Appendix~\ref{#1}}
+%    \end{macrocode}
+%
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsection{Float Placement}
+%
+% \begin{macro}{\topfraction}
+% \begin{macro}{\textfraction}
+%    Preventing figures from appearing on a page by themselves. \LaTeX's figure
+%    placement algorithm is quite biased in favour of putting figures on a page
+%    by themselves, instead of on the top of a page with some text below it.
+%    Fortunately, the parameters of the algorithm can be changed. The main problem
+%    is that \LaTeX\ per default only allows a part of the top of a text-page (70\%)
+%    to contain figures, and requires at least 20\% of a page to be text when text and
+%    figures share a page. These parameters should be set to more reasonable values,
+%    for example 85\% and 10\%.
+%    \begin{macrocode}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{.85}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\dbltopfraction}{.85}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \begin{macro}{\floatpagefraction}
+%    This helps, but sometimes \LaTeX\ puts a figure on a page by itself, although it
+%    would fit perfectly well on the top of a page. This happens when the figure will
+%    not fit on the page where it was defined. \LaTeX\ then attempts to put it on a
+%    figures-only page before it attempts to put it at the top of the next page. A page
+%    may contain figures alone if the figure(s) use at least half the page. To prevent
+%    half-empty pages this limit should probably be increased to around 75\%.
+%    \begin{macrocode}
+\renewcommand{\floatpagefraction}{0.75}
+\renewcommand{\dblfloatpagefraction}{.75}
+%    \end{macrocode}
+%    Be careful not to make \texttt{floatpagefraction} larger than \texttt{topfraction},
+%    then you risk to produce a figure that can neither go on the top of a text page,
+%    nor on a page by itself. If that happens, the figure and all later figures will be
+%    postponed until next time a \texttt{clearpage} is executed (typically at the end of
+%    a chapter or the end of the document). This will also happen if a figure is too
+%    large to fit on a page.
+%    \begin{macrocode}
+\setcounter{topnumber}{9}
+\setcounter{bottomnumber}{9}
+\setcounter{totalnumber}{20}
+\setcounter{dbltopnumber}{9}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \subsection{Graphics}
+%
+%    Load the \texttt{graphicx} package, so we can include pictures easily. Load the \texttt{epstopdf},
+%    so that eps files are automatically converted to pdf when pdf\LaTeX\ is used. This requires a
+%   version of {\em epstopdf} to be installed on you system. You can find a windows version at\newline
+%   \texttt{http://www.ctan.org/tex-archive/support/epstopdf/epstopdf.exe}.
+%
+%    \begin{macrocode}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+%    \end{macrocode}
+%
+% \subsection{Subfigures and subtables}
+%
+%    Load the \texttt{subfigure} package, so we can include subfigures easily.
+%
+%    \begin{macrocode}
+\usepackage[scriptsize]{subfigure}
+\usepackage{booktabs}
+\usepackage{rotating}
+%    \end{macrocode}
+%
+% \subsection{Listings}
+%
+%    Load the \texttt{listings} package, so we can include listings easily.
+%
+%    \begin{macrocode}
+\usepackage{listings}
+\usepackage{lstpatch}
+\lstset{captionpos=b,
+        frame=tb,
+        basicstyle=\scriptsize\ttfamily,
+        showstringspaces=false,
+        keepspaces=true}
+\lstdefinestyle{matlab} {
+        language=Matlab,
+        keywordstyle=\color{blue},
+        commentstyle=\color[rgb]{0.13,0.55,0.13}\em,
+        stringstyle=\color[rgb]{0.7,0,0} }
+%    \end{macrocode}
+%
+% \subsection{Hyperlinks}
+%
+%    Load the \texttt{hyperref} package to provide hyperlinks in pdf and dvi documents.
+%
+%    \begin{macrocode}
+\usepackage[pdfpagemode={UseOutlines},bookmarks=true,bookmarksopen=true,
+   bookmarksopenlevel=0,bookmarksnumbered=true,hypertexnames=false,
+   colorlinks,linkcolor={blue},citecolor={blue},urlcolor={red},
+   pdfstartview={FitV},unicode,breaklinks=true]{hyperref}
+\pdfstringdefDisableCommands{
+   \let\\\space
+}
+%    \end{macrocode}
+%
+% \section{Internal Names}
+%
+% \begin{macro}{\supervisor}
+% \begin{macro}{\examiner}
+% \begin{macro}{\degree}
+% \begin{macro}{\authors}
+% \begin{macro}{\addresses}
+% \begin{macro}{\university}
+% \begin{macro}{\UNIVERSITY}
+% \begin{macro}{\department}
+% \begin{macro}{\DEPARTMENT}
+% \begin{macro}{\group}
+% \begin{macro}{\GROUP}
+% \begin{macro}{\faculty}
+% \begin{macro}{\FACULTY}
+% \begin{macro}{\subject}
+% \begin{macro}{\keywords}
+%
+%    The various elements of the documents are defined
+%    as control sequences to make it easy to customize this
+%    style for other parts of the University.
+%
+%    \begin{macrocode}
+\newcommand*{\supervisor}[1]{\def\supname{#1}}
+\newcommand*{\examiner}[1]{\def\examname{#1}}
+\newcommand*{\degree}[1]{\def\degreename{#1}}
+\newcommand*{\authors}[1]{\def\authornames{#1}}
+\newcommand*{\addresses}[1]{\def\addressnames{#1}}
+\newcommand*{\university}[1]{\def\univname{#1}}
+\newcommand*{\UNIVERSITY}[1]{\def\UNIVNAME{#1}}
+\newcommand*{\department}[1]{\def\deptname{#1}}
+\newcommand*{\DEPARTMENT}[1]{\def\DEPTNAME{#1}}
+\newcommand*{\group}[1]{\def\groupname{#1}}
+\newcommand*{\GROUP}[1]{\def\GROUPNAME{#1}}
+\newcommand*{\faculty}[1]{\def\facname{#1}}
+\newcommand*{\FACULTY}[1]{\def\FACNAME{#1}}
+\newcommand*{\subject}[1]{\def\subjectname{#1}}
+\newcommand*{\keywords}[1]{\def\keywordnames{#1}}
+%    \end{macrocode}
+%
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+%
+% \begin{macro}{\supname}
+% \begin{macro}{\examname}
+% \begin{macro}{\degreename}
+% \begin{macro}{\authornames}
+% \begin{macro}{\univname}
+% \begin{macro}{\UNIVNAME}
+% \begin{macro}{\deptname}
+% \begin{macro}{\DEPTNAME}
+% \begin{macro}{\groupname}
+% \begin{macro}{\GROUPNAME}
+% \begin{macro}{\facname}
+% \begin{macro}{\FACNAME}
+% \begin{macro}{\subjectname}
+% \begin{macro}{\keywordnames}
+%
+%    The internal names of the elements are set
+%    to defaults appropriate to the Department of Electronics and Computer Science.
+%
+%    \begin{macrocode}
+\supervisor  {}
+\examiner    {}
+\degree      {}
+\authors     {}
+\university  {\texorpdfstring{\href{http://www.soton.ac.uk}
+                {University of Southampton}}
+                {University of Southampton}}
+\UNIVERSITY  {\texorpdfstring{\href{http://www.soton.ac.uk}
+                {UNIVERSITY OF SOUTHAMPTON}}
+                {UNIVERSITY OF SOUTHAMPTON}}
+\department  {\texorpdfstring{\href{http://www.ecs.soton.ac.uk}
+                {School of Electronics and Computer Science}}
+                {School of Electronics and Computer Science}}
+\DEPARTMENT  {\texorpdfstring{\href{http://www.ecs.soton.ac.uk}
+                {SCHOOL OF ELECTRONICS AND COMPUTER SCIENCE}}
+                {SCHOOL OF ELECTRONICS AND COMPUTER SCIENCE}}
+\group       {\texorpdfstring{\href{http://www.isis.ecs.soton.ac.uk}
+                {Image, Speech and Intelligent Systems Group}}
+                {Image, Speech and Intelligent Systems Group}}
+\GROUP       {\texorpdfstring{\href{http://www.isis.ecs.soton.ac.uk}
+                {IMAGE, SPEECH AND INTELLIGENT SYSTEMS GROUP}}
+                {IMAGE, SPEECH AND INTELLIGENT SYSTEMS GROUP}}
+\faculty     {\texorpdfstring{\href{http://www.engineering.soton.ac.uk}
+                {Faculty of Engineering, Science and Mathematics}}
+                {Faculty of Engineering, Science and Mathematics}}
+\FACULTY     {\texorpdfstring{\href{http://www.engineering.soton.ac.uk}
+                {FACULTY OF ENGINEERING, SCIENCE AND MATHEMATICS}}
+                {FACULTY OF ENGINEERING, SCIENCE AND MATHEMATICS}}
+\addresses   {}
+\subject     {}
+\keywords    {}
+%    \end{macrocode}
+%
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \section{Special Pages}
+%
+% \subsection{Title Page}
+%
+% \begin{macro}{\maketitle}
+%
+%    Setup an appropriate title page and pdf strings if we are using
+%    pdf\LaTeX.
+%
+%   \begin{macrocode}
+%<*thesis|minithesis|progress|project|report|gdp|gdpsummary>}
+\renewcommand\maketitle{
+  \btypeout{Title Page}
+  \hypersetup{pdftitle={\@title}}
+  \hypersetup{pdfsubject=\subjectname}
+  \hypersetup{pdfauthor=\authornames}
+  \hypersetup{pdfkeywords=\keywordnames}
+  \thispagestyle{empty}
+  \begin{titlepage}
+    \let\footnotesize\small
+    \let\footnoterule\relax
+    \let \footnote \thanks
+    \setcounter{footnote}{0}
+    \null\vfil
+    \vskip 60\p@
+    \begin{center}
+      \setlength{\parskip}{0pt}
+      {\large\textbf{\UNIVNAME}\par}
+%<*minithesis|progress|project|gdp|gdpsummary>
+      {\large \facname \par}
+%</minithesis|progress|project|gdp|gdpsummary>
+%<*minithesis|progress|project>
+      {\large \deptname \par}
+%</minithesis|progress|project>
+      \vfill
+%<*minithesis>
+      {\large A mini-thesis submitted for transfer from}
+      {\large MPhil to PhD \par}
+%</minithesis>
+%<*progress>
+      {\large A progress report submitted for continuation}
+      {\large towards a PhD \par}
+%</progress>
+%<*project>
+      {\large A project report submitted for the}
+      {\large award of \par \degreename \par}
+%</project>
+%<*gdp>
+      {\large A group design project report submitted for}
+      {\large the award of \par \degreename \par}
+%</gdp>
+%<*gdpsummary>
+      {\large A group design project summary report submitted}
+      {\large for the award of \par \degreename \par}
+%</gdpsummary>
+%<*minithesis|progress|project|gdp|gdpsummary>
+      \vfill
+      {\normalsize Supervisor: \supname \par}
+      {\normalsize Examiner: \examname \par}
+      \vfill
+      \hspace{6mm}\parbox[t][51mm][s]{89mm}{
+        \center
+        \vfill
+        {\large \bf \@title \par}
+        \vfill
+        {\normalsize by \authornames \par}
+        \vfill
+        {\normalsize \@date \par}
+        \vfill
+      }
+      \parbox[t][95mm][s]{89mm}{}
+%</minithesis|progress|project|gdp|gdpsummary>
+%<*thesis|report>
+      {\huge \bf \@title \par}
+      \vfill
+      {\LARGE by \par}
+      \smallskip
+      {\LARGE \authornames \par}
+      \vfill
+%<*thesis>
+      {\large A thesis submitted in partial fulfillment for the \par}
+      {\large degree of Doctor of Philosophy \par}
+%</thesis>
+%<report>      {\large Technical Report \par}
+      \bigskip
+      \bigskip
+%<thesis>      {\large in the \par}
+      {\large \facname \par}
+      {\large \deptname \par}
+      \bigskip
+      \bigskip
+      \bigskip
+      {\Large \@date \par}
+      \bigskip
+%</thesis|report>
+    \end{center}
+    \par
+    \@thanks
+    \vfil\null
+  \end{titlepage}
+  \setcounter{footnote}{0}%
+  \global\let\thanks\relax
+  \global\let\maketitle\relax
+  \global\let\@thanks\@empty
+  \global\let\@author\@empty
+  \global\let\@date\@empty
+  \global\let\@title\@empty
+  \global\let\title\relax
+  \global\let\author\relax
+  \global\let\date\relax
+  \global\let\and\relax
+  \cleardoublepage
+}
+%</thesis|minithesis|progress|project|report|gdp|gdpsummary>
+%<*article>
+\if@titlepage
+  \renewcommand\maketitle{
+    \btypeout{Title Page}
+    \hypersetup{pdftitle={\@title}}
+    \hypersetup{pdfsubject={\subjectname}}
+    \hypersetup{pdfauthor={\authornames}}
+    \hypersetup{pdfkeywords={\keywordnames}}
+    \markboth{\authornames}{\@title}
+    \begin{titlepage}
+    \thispagestyle{empty}
+    \let\footnotesize\small
+    \let\footnoterule\relax
+    \let \footnote \thanks
+    \null\vfil
+    \vskip 60\p@
+    \begin{center}
+      {\LARGE \@title \par}
+      \vskip 3em
+      {\large \lineskip .75em
+        \begin{tabular}[t]{c} \authornames \end{tabular}
+      \par}
+      \vskip 1em
+      {\large \lineskip .5em
+        \begin{tabular}[t]{c} \addressnames \end{tabular}
+      \par}
+      \vskip 1.5em
+      {\large \@date \par}
+      \if\keywordnames
+      \else
+        \quotation
+        \vskip 1.5em
+        {\noindent \normalsize
+            \textbf{Keywords:}
+            \textit{\keywordnames}
+        \par}
+        \endquotation
+      \fi
+    \end{center}
+    \par
+    \@thanks
+    \vfil\null
+    \end{titlepage}
+    \setcounter{footnote}{0}
+    \global\let\thanks\relax
+    \global\let\maketitle\relax
+    \global\let\@maketitle\relax
+    \global\let\@thanks\@empty
+    \global\let\@author\@empty
+    \global\let\@date\@empty
+    \global\let\@title\@empty
+    \global\let\title\relax
+    \global\let\author\relax
+    \global\let\date\relax
+    \global\let\and\relax
+  }
+\else
+  \renewcommand\maketitle{
+    \btypeout{Title Page}
+    \hypersetup{pdftitle={\@title}}
+    \hypersetup{pdfsubject=\subjectname}
+    \hypersetup{pdfauthor=\authornames}
+    \hypersetup{pdfkeywords=\keywordnames}
+    \markboth{\authornames}{\@title}
+    \thispagestyle{empty}
+    \par
+    \begingroup
+      \renewcommand\thefootnote{\@fnsymbol\c@footnote}
+      \def\@makefnmark{
+        \rlap{\@textsuperscript{\normalfont\@thefnmark}}
+      }
+      \long\def\@makefntext##1{
+        \parindent 1em\noindent \hb@xt@1.8em
+        {\hss\@textsuperscript{\normalfont\@thefnmark}}##1
+      }
+      \if@twocolumn
+        \ifnum \col@number=\@ne
+          \@maketitle
+        \else
+          \twocolumn[\@maketitle]%
+        \fi
+      \else
+        \newpage
+        % Prevent figures from going at top of page.
+        \global\@topnum\z@
+        \@maketitle
+      \fi
+      \thispagestyle{plain}\@thanks
+    \endgroup
+    \setcounter{footnote}{0}%
+    \global\let\thanks\relax
+    \global\let\maketitle\relax
+    \global\let\@maketitle\relax
+    \global\let\@thanks\@empty
+    \global\let\@author\@empty
+    \global\let\@date\@empty
+    \global\let\@title\@empty
+    \global\let\title\relax
+    \global\let\author\relax
+    \global\let\date\relax
+    \global\let\and\relax
+  }
+  \def\@maketitle{
+    \newpage
+    \null
+    \vskip 2em
+    \begin{center}
+      \let \footnote \thanks
+      {\LARGE \@title \par}
+      \vskip 1.5em
+      {\large \lineskip .5em
+        \begin{tabular}[t]{c} \authornames \end{tabular}
+      \par}
+      \vskip 0.7em
+      {\large \lineskip .5em
+        \begin{tabular}[t]{c} \addressnames \end{tabular}
+      \par}
+      \vskip 1em
+      {\large \@date}
+    \end{center}
+    \par
+    \vskip 1.5em
+  }
+\fi
+%</article>
+%    \end{macrocode}
+%
+% \end{macro}
+%
+% \subsection{Abstract Page}
+%
+% \begin{macro}{\abstract}
+%
+%    Setup an appropriate abstract page.
+%
+%    \begin{macrocode}
+%<*thesis|minithesis|progress|project|report|gdp>
+\newenvironment{abstract}
+{
+  \btypeout{Abstract Page}
+  \thispagestyle{empty}
+  \null\vfil
+  \begin{center}
+    \setlength{\parskip}{0pt}
+    {\normalsize \UNIVNAME \par}
+    \bigskip
+    {\underline{ABSTRACT} \par}
+    \bigskip
+    {\normalsize \FACNAME \par}
+%<*thesis|minithesis|progress|project|report>
+    {\normalsize \DEPTNAME \par}
+%</thesis|minithesis|progress|project|report>
+    \bigskip
+%<*thesis>
+    {\normalsize \underline{Doctor of Philosophy}\par}
+%</thesis>
+%<*minithesis>
+    {\normalsize \underline{A mini-thesis submitted for transfer from MPhil to PhD}\par}
+%</minithesis>
+%<*progress>
+    {\normalsize \underline{A progress report submitted for continuation towards a PhD}\par}
+%</progress>
+%<*project>
+    {\normalsize \underline{A project report submitted for the award of \degreename}\par}
+%</project>
+%<*gdp>
+    {\normalsize \underline{A group design project report submitted for the award of \degreename}\par}
+%</gdp>
+    \bigskip
+    {\normalsize\bf \@title \par}
+    \medskip
+    {\normalsize by \authornames \par}
+    \bigskip
+  \end{center}
+}
+{
+  \vfil\vfil\vfil\null
+  \cleardoublepage
+}
+%</thesis|minithesis|progress|project|report|gdp>
+%<*article>
+\if@titlepage
+  \renewenvironment{abstract}{
+      \titlepage
+      \null\vfil
+      \@beginparpenalty\@lowpenalty
+      \begin{center}
+        \bfseries \abstractname
+        \@endparpenalty\@M
+      \end{center}
+      \begin{itshape}
+      \noindent
+  }
+  {
+      \par
+      \end{itshape}
+      \if\keywordnames
+      \else
+        \quote
+        \vskip 1.5em
+        {\noindent \normalsize
+            \textbf{Keywords:}
+            \textit{\keywordnames}
+        \par}
+        \endquote
+      \fi
+      \vfil\null\endtitlepage
+  }
+\else
+  \renewenvironment{abstract}{
+      \if@twocolumn
+        \section*{\abstractname}
+      \else
+        \small
+        \begin{center}
+          {\bfseries \abstractname\vspace{-.5em}\vspace{\z@}}
+        \end{center}
+        \quote
+      \fi
+      \begin{itshape}
+  }
+  {
+      \end{itshape}
+      \if\keywordnames
+      \else
+        \vskip 1.5em
+        {\noindent \normalsize
+            \textbf{Keywords:}
+            \textit{\keywordnames}
+        \par}
+      \fi
+      \if@twocolumn\else\endquote\fi
+  }
+\fi
+%</article>
+%    \end{macrocode}
+%
+% \end{macro}
+%
+% \subsection{Contents Pages}
+%
+% \subsubsection{Add to Table of Contents}
+%
+%    Ensures numbering for sub-subsections in the table of contents, and provide
+%    for 6 levels to appear in toc. Define \texttt{addtotoc} to enable adding
+%    elements to the toc at chapter level, using a dummy counter to fix bookmarks
+%    in pdf\LaTeX.
+%
+%    \begin{macrocode}
+%<*thesis|minithesis|progress|project|report|gdp|article>
+\addtocounter{secnumdepth}{1}
+\setcounter{tocdepth}{6}
+\newcounter{dummy}
+\newcommand\addtotoc[1]{
+\refstepcounter{dummy}
+%<*thesis|minithesis|progress|project|report|gdp>
+\addcontentsline{toc}{chapter}{#1}}
+%</thesis|minithesis|progress|project|report|gdp>
+%<*article>
+\addcontentsline{toc}{section}{#1}}
+%</article>
+%    \end{macrocode}
+%
+% \subsubsection{Table of Contents}
+%
+% \begin{macro}{\tableofcontents}
+%
+%    Adjust line and paragraph spacing.
+%
+%    \begin{macrocode}
+\renewcommand\tableofcontents{
+\btypeout{Table of Contents}
+\begin{spacing}{1}{
+    \setlength{\parskip}{1pt}
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+%<*thesis|minithesis|progress|project|report|gdp>
+    \chapter*{\contentsname
+%</thesis|minithesis|progress|project|report|gdp>
+%<*article>
+    \section*{\contentsname
+%</article>
+        \@mkboth{
+           \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}
+    \@starttoc{toc}
+    \if@restonecol\twocolumn\fi
+%<thesis|minithesis|progress|project|report|gdp>   \cleardoublepage
+}\end{spacing}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{List of Figures}
+%
+% \begin{macro}{\listoffigures}
+%
+%    Adjust line and paragraph spacing.
+%
+%    \begin{macrocode}
+\renewcommand\listoffigures{
+\btypeout{List of Figures}
+\begin{spacing}{1}{
+    \setlength{\parskip}{1pt}
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+%<*thesis|minithesis|progress|project|report|gdp>
+    \chapter*{\listfigurename
+%</thesis|minithesis|progress|project|report|gdp>
+%<*article>
+    \section*{\listfigurename
+%</article>
+      \@mkboth{\MakeUppercase\listfigurename}
+              {\MakeUppercase\listfigurename}}
+    \@starttoc{lof}
+    \if@restonecol\twocolumn\fi
+%<*thesis|minithesis|progress|project|report|gdp>
+    \cleardoublepage
+%</thesis|minithesis|progress|project|report|gdp>
+}\end{spacing}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{List of Tables}
+%
+% \begin{macro}{\listoftables}
+%
+%    Adjust line and paragraph spacing.
+%
+%    \begin{macrocode}
+\renewcommand\listoftables{
+\btypeout{List of Tables}
+\begin{spacing}{1}{
+    \setlength{\parskip}{1pt}
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+%<*thesis|minithesis|progress|project|report|gdp>
+    \chapter*{\listtablename
+%</thesis|minithesis|progress|project|report|gdp>
+%<*article>
+    \section*{\listtablename
+%</article>
+      \@mkboth{
+          \MakeUppercase\listtablename}{\MakeUppercase\listtablename}}
+    \@starttoc{lot}
+    \if@restonecol\twocolumn\fi
+%<*thesis|minithesis|progress|project|report|gdp>
+    \cleardoublepage
+%</thesis|minithesis|progress|project|report|gdp>
+}\end{spacing}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{List of Symbols}
+%
+% \begin{macro}{\listofsymbols}
+%
+%    Provide a \texttt{listofsymbols} command to produce a list of symbols,
+%
+%    \begin{macrocode}
+%<*thesis|minithesis|progress|report|article>
+\newcommand\listsymbolname{Nomenclature}
+%</thesis|minithesis|progress|report|article>
+%<*project|gdp>
+\newcommand\listsymbolname{List of Symbols}
+%</project|gdp>
+\usepackage{longtable}
+\newcommand\listofsymbols[2]{
+\btypeout{\listsymbolname}
+\addtotoc{\listsymbolname}
+%<*thesis|minithesis|progress|project|report|gdp>
+    \chapter*{\listsymbolname
+%</thesis|minithesis|progress|project|report|gdp>
+%<*article>
+    \section*{\listsymbolname
+%</article>
+      \@mkboth{
+          \MakeUppercase\listsymbolname}{\MakeUppercase\listsymbolname}}
+\begin{longtable}[c]{#1}#2\end{longtable}\par
+%<*thesis|minithesis|progress|project|report|gdp>
+    \cleardoublepage
+%</thesis|minithesis|progress|project|report|gdp>
+}
+%</thesis|minithesis|progress|project|report|gdp|article>
+%    \end{macrocode}
+%
+% \end{macro}
+%
+% \subsection{Acknowledgements}
+%
+% \begin{macro}{\acknowledgements}
+%
+%    Thank someone!
+%
+%    \begin{macrocode}
+\newcommand\acknowledgements[1]{
+\btypeout{Acknowledgements}
+\addtotoc{Acknowledgements}
+%<*thesis|minithesis|progress|project|report|gdp>
+\thispagestyle{plain}
+\null\vfil
+\vskip 60\p@
+\begin{center}{\Large\bf Acknowledgements \par}\end{center}
+{\normalsize #1}
+\vfil\vfil\null
+\cleardoublepage
+%</thesis|minithesis|progress|project|report|gdp>
+%<*article>
+\section*{Acknowledgements}
+{\normalsize #1}
+%</article>
+}
+%    \end{macrocode}
+%
+% \end{macro}
+%
+% \subsection{Dedicatory}
+%
+% \begin{macro}{\dedicatory}
+%
+%    Dedicate the document to someone!
+%
+%    \begin{macrocode}
+\newcommand\dedicatory[1]{
+\btypeout{Dedicatory}
+%<*thesis|minithesis|progress|project|report|gdp>
+\thispagestyle{plain}
+\null\vfil
+\vskip 60\p@
+\begin{center}{\Large \sl #1}\end{center}
+\vfil\null
+\cleardoublepage
+%</thesis|minithesis|progress|project|report|gdp>
+}
+%    \end{macrocode}
+%
+% \end{macro}
+%
+% \section{Parts}
+%
+% \begin{macro}{\frontmatter}
+%
+%    Modify \texttt{frontmatter}.
+%
+%    \begin{macrocode}
+%<*article>
+\newcommand\frontmatter{ }
+%</article>
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\mainmatter}
+%
+%    Modify \texttt{mainmatter}.
+%
+%    \begin{macrocode}
+%<*article>
+\newcommand\mainmatter{ }
+%</article>
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\backmatter}
+%
+%    Modify \texttt{backmatter} to add the bibliography to the table of contents.
+%
+%    \begin{macrocode}
+%<*thesis|minithesis|progress|project|report|gdp>
+\renewcommand\backmatter{
+  \if@openright
+    \cleardoublepage
+  \else
+    \clearpage
+  \fi
+  \addtotoc{\bibname}
+  \btypeout{\bibname}
+  \@mainmatterfalse}
+%</thesis|minithesis|progress|project|report|gdp>
+%<*article>
+\newcommand\bibname{References}
+\newcommand\backmatter{
+  \addtotoc{\bibname}
+  \btypeout{\bibname}
+}
+%</article>
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+%</thesis|minithesis|progress|project|report|article|gdp|gdpsummary>
+%    \end{macrocode}
+%
+%
+% \section{Example Documents}
+%
+%    \begin{macrocode}
+%<*testthesis>
+\documentclass{ecsthesis}      % Use the Thesis Style
+%</testthesis>
+%<*testminithesis>
+\documentclass{ecsminithesis}  % Use the minithesis Style
+%</testminithesis>
+%<*testprogress>
+\documentclass{ecsprogress}    % Use the progress Style
+%</testprogress>
+%<*testproject>
+\documentclass{ecsproject}     % Use the Project Style
+%</testproject>
+%<*testreport>
+\documentclass{ecsreport}      % Use the Report Style
+%</testreport>
+%<*testarticle>
+\documentclass{ecsarticle}     % Use the Article Style
+%</testarticle>
+%<*testgdp>
+\documentclass{ecsgdp}         % Use the GDP Report Style
+%</testgdp>
+%<*testgdpsummary>
+\documentclass{ecsgdpsummary}  % Use the GDP Summary Report Style
+%</testgdpsummary>
+%<*testthesis|testminithesis|testprogress|testproject|testreport|testarticle|testgdp|testgdpsummary>
+\graphicspath{{../Figures/}}   % Location of your graphics files
+\usepackage{natbib}            % Use Natbib style for the refs.
+\hypersetup{colorlinks=true}   % Set to false for black/white printing
+\input{Definitions}            % Include your abbreviations
+%% ----------------------------------------------------------------
+\begin{document}
+\frontmatter
+\title      {An Investigation into \dots}
+\authors    {\texorpdfstring
+             {\href{mailto:S.R.Gunn@ecs.soton.ac.uk}{Steve R. Gunn}}
+             {Steve R. Gunn}
+            }
+\addresses  {\groupname\\\deptname\\\univname}
+\date       {\today}
+\subject    {}
+\keywords   {}
+%<*testminithesis|testprogress|testproject|testgdp|testgdpsummary>
+\supervisor {Mr Beavis}
+\examiner   {Dr Butthead}
+%</testminithesis|testprogress|testproject|testgdp|testgdpsummary>
+%<*testproject>
+\degree     {BEng Electronic Engineering}
+%</testproject>
+%<*testgdp|testgdpsummary>
+\degree     {Master of Engineering}
+%</testgdp|testgdpsummary>
+\maketitle
+%</testthesis|testminithesis|testprogress|testproject|testreport|testarticle|testgdp|testgdpsummary>
+%<*testthesis|testminithesis|testprogress|testproject|testreport|testarticle|testgdp>
+\begin{abstract}
+This work is all about \dots
+\end{abstract}
+\tableofcontents
+\listoffigures
+\listoftables
+\lstlistoflistings
+\listofsymbols{ll}{$w$ & The weight vector}
+%</testthesis|testminithesis|testprogress|testproject|testreport|testarticle|testgdp>
+%<*testthesis|testminithesis|testprogress|testproject|testreport|testgdp>
+\acknowledgements{Thanks to no one.}
+\dedicatory{To \dots}
+%</testthesis|testminithesis|testprogress|testproject|testreport|testgdp>
+%<*testthesis|testminithesis|testprogress|testproject|testreport|testarticle|testgdp|testgdpsummary>
+\mainmatter
+%% ----------------------------------------------------------------
+%</testthesis|testminithesis|testprogress|testproject|testreport|testarticle|testgdp|testgdpsummary>
+%<*testthesis|testminithesis|testprogress|testproject|testreport|testgdp>
+\include{Introduction}
+\include{Conclusions}
+\appendix
+\include{AppendixA}
+\backmatter
+\bibliographystyle{ecs}
+\bibliography{ECS}
+%</testthesis|testminithesis|testprogress|testproject|testreport|testgdp>
+%<*testgdpsummary>
+\section*{Introduction}
+\section*{Objectives}
+\section*{Resources}
+\section*{Constraints}
+\section*{Approaching the task}
+\section*{Team Organisation}
+\section*{Important Results}
+\section*{Conclusions}
+\section*{Recommendations}
+%</testgdpsummary>
+%<*introduction>
+\chapter{Introduction} \label{Chapter:Introduction}
+%</introduction>
+%<*testarticle>
+\section{Introduction} \label{Section:Introduction}
+%</testarticle>
+%<*introduction|testarticle>
+You probably found all the files from \cite{Gunn:2001:pdflatex}.
+\tref{Table:tabex} illustrates the results of my work.
+\begin{table}[!htb]
+  \centering
+  \begin{tabular}{cc}
+  \toprule
+  \textbf{Training Error} & \textbf{Testing Error}\\
+  \midrule
+  0 & $\infty$\\
+  \bottomrule
+  \end{tabular}
+  \caption{The Results}
+  \label{Table:tabex}
+\end{table}
+
+\fref{Figure:figex} shows why this is the case.
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=8cm]{figure}
+  \caption{A colourful picture.}
+  \label{Figure:figex}
+\end{figure}
+
+This page shows you a subfigure example in \fref{Figure:figsubex}.
+\begin{figure}[!htb]
+  \centering
+  \subfigure[The left caption]{
+    \includegraphics[width=4.2cm]{figure}
+    \label{Figure:figsubex:left}
+  }
+  \subfigure[The right caption]{
+    \includegraphics[width=4.2cm]{figure}
+    \label{Figure:figsubex:right}
+  }
+  \caption{A doubly colourful picture.}
+  \label{Figure:figsubex}
+\end{figure}
+%</introduction|testarticle>
+%<*conclusions>
+\chapter{Conclusions} \label{Chapter: Conclusions}
+%</conclusions>
+%<*testarticle>
+%% ----------------------------------------------------------------
+\section{Conclusions} \label{Section: Conclusions}
+%</testarticle>
+%<*conclusions|testarticle>
+It works.
+%</conclusions|testarticle>
+%<*testarticle>
+\acknowledgements{Thanks to no one.}
+\backmatter
+\bibliographystyle{ecs}
+\bibliography{ECS}
+\appendix
+%</testarticle>
+%<*appendix|testarticle>
+%<*appendix>
+\chapter{Stuff} \label{Chapter:Stuff}
+%</appendix>
+%<*testarticle>
+%% ----------------------------------------------------------------
+\section{Stuff} \label{Section:Stuff}
+%</testarticle>
+The following gets in the way of the text....
+%</appendix|testarticle>
+%<*testthesis|testminithesis|testprogress|testproject|testreport|testarticle|testgdp|testgdpsummary>
+\end{document}
+%% ----------------------------------------------------------------
+%</testthesis|testminithesis|testprogress|testproject|testreport|testarticle|testgdp|testgdpsummary>
+%    \end{macrocode}
+%
+% \subsection{Example Figure}
+%
+%    \begin{macrocode}
+%<*figure>
+%%BoundingBox: 0 150 600 650
+%%EndComments
+0.0 setlinewidth
+/length 0.1 def
+/width 0.02 def
+/hsvcircle {
+gsave
+    /h 0.0 def
+    0 4 360 {
+    pop
+    gsave
+    0.5 0.0 translate
+    newpath
+    0.0 0.0 moveto
+    length 0.0 lineto
+    length width lineto
+    0.0 width lineto
+    closepath
+    h 1.0 1.0 sethsbcolor
+    fill
+    grestore
+    /h h 4 360 div add def
+    4 rotate
+    } for
+grestore
+} def
+0.0 setlinewidth
+0.0 setgray
+300 400 translate
+500 500 scale
+30 rotate
+1.0 0.7 scale
+-30 rotate
+hsvcircle
+0.8 0.8 scale
+hsvcircle
+0.8 0.8 scale
+hsvcircle
+0.8 0.8 scale
+hsvcircle
+0.8 0.8 scale
+hsvcircle
+0.8 0.8 scale
+hsvcircle
+0.8 0.8 scale
+hsvcircle
+showpage
+%</figure>
+%    \end{macrocode}
+%
+% \subsection{Definitions File}
+%
+%    \begin{macrocode}
+%<*definitions>
+\newcommand{\BibTeX}{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+%% People
+\newcounter{address}
+\setcounter{address}{1}
+\renewcommand{\theaddress}{\textsuperscript{\fnsymbol{address}}}
+\newcommand{\address}[1]{\refstepcounter{address}\theaddress#1\\}
+\newcommand{\Name}[3]{\texorpdfstring{\href{mailto:#3}{#2}#1}{#2}\xspace}
+\newcommand{\SteveRGunn}[1]{\Name{#1}{Steve R. Gunn}{S.R.Gunn@ecs.soton.ac.uk}}
+
+%% Dingbats
+\newcommand{\tick}{\ding{51}}
+\newcommand{\cross}{\ding{55}}
+
+%% Calculus
+\newcommand{\pd}[2]{\ensuremath{\frac{\partial #1}{\partial #2}}\xspace}
+\newcommand{\fd}[2]{\ensuremath{\frac{d #1}{d #2}}\xspace}
+\newcommand{\dint}{\ensuremath{\int\!\!\!\int}\xspace}
+\newcommand{\tint}{\ensuremath{\int\!\!\!\int\!\!\!\int}\xspace}
+
+%% Math Sets
+\newcommand{\Q}[1]{\ensuremath{\mathbb{#1}}\xspace}
+\newcommand{\R}{\Q{R}}
+
+%% Matrix, Vector
+\newcommand{\V}[1]{\ensuremath{\boldsymbol{#1}}\xspace}
+\newcommand{\M}[1]{\ensuremath{\boldsymbol{#1}}\xspace}
+\newcommand{\0}{\V{0}}
+\newcommand{\1}{\V{1}}
+\newcommand{\I}{\M{I}}
+
+%% Math Functions
+\newcommand{\F}[1]{\ensuremath{\mathrm{#1}}\xspace}
+\newcommand{\sgn}{\F{sgn}}
+\newcommand{\tr}{\F{trace}}
+\newcommand{\diag}{\F{diag}}
+
+%% Math Names
+\newcommand{\N}[1]{\ensuremath{\mathit{#1}}\xspace}
+
+%% Data
+\newcommand{\mc}[1]{\ensuremath{\mathcal{#1}}\xspace}
+\newcommand{\Hyp}{\mc{H}}
+\newcommand{\D}{\mc{D}}
+
+%% Kernel
+\newcommand{\K}{\M{K}}
+\newcommand{\eins}{\texorpdfstring{\ensuremath{\epsilon}}{\textepsilon}-insensitive\xspace}
+\newcommand{\e}{\ensuremath{\epsilon}\xspace}
+\newcommand{\Bxi}{\ensuremath{\boldsymbol{\xi}}\xspace}
+\newcommand{\Kanova}{\ensuremath{\mathit{K_{ANOVA}}}\xspace}
+\newcommand{\Kspline}{\ensuremath{\mathit{K_{spline}}}\xspace}
+
+%% Bayesian
+\newcommand{\MP}{\ensuremath{\mathit{{\scriptscriptstyle \hspace{-1.5pt}M\hspace{-1.5pt}P}}}\xspace}
+\newcommand{\ML}{\ensuremath{\mathit{{\scriptscriptstyle \hspace{-1.5pt}M\hspace{-1.5pt}L}}}\xspace}
+\newcommand{\Qw}{\ensuremath{Q_{\w}(\w)}\xspace}
+\newcommand{\Qa}{\ensuremath{Q_{\Ba}(\Ba)}\xspace}
+\newcommand{\Qb}{\ensuremath{Q_{\beta}(\beta)}\xspace}
+\newcommand{\wMPab}{\ensuremath{\w_{\MP|\bar {\Ba},\bar \beta}}\xspace}
+\newcommand{\wMP}{\ensuremath{\w_{\MP}}\xspace}
+\newcommand{\yMP}{\ensuremath{y_{\MP}}\xspace}
+\newcommand{\BaMP}{\ensuremath{\Ba_{\hspace{1pt}\MP}}\xspace}
+\newcommand{\aMP}{\ensuremath{\alpha_{\hspace{1pt}\MP}}\xspace}
+\newcommand{\bMP}{\ensuremath{\beta_{\hspace{1pt}\MP}}\xspace}
+\newcommand{\Sab}{\ensuremath{\M{\Sigma}_{\bar \Ba,\bar \beta}}\xspace}
+\newcommand{\Ba}{\ensuremath{\boldsymbol{\alpha}}\xspace}
+\newcommand{\Bb}{\ensuremath{\boldsymbol{\beta}}\xspace}
+\newcommand{\Bm}{\ensuremath{\boldsymbol{\mu}}\xspace}
+\newcommand{\BL}{\ensuremath{\boldsymbol{\Lambda}}\xspace}
+\newcommand{\BPhi}{\ensuremath{\boldsymbol{\Phi}}\xspace}
+\newcommand{\SMP}{\ensuremath{\M{\Sigma}_{\MP}}\xspace}
+
+\newcommand{\Pa}{\ensuremath{P(\alpha|\mathcal{H})}\xspace}
+\newcommand{\Pb}{\ensuremath{P(\beta|\mathcal{H})}\xspace}
+\newcommand{\Pab}{\ensuremath{P(\alpha,\beta|\mathcal{H})}\xspace}
+\newcommand{\Pw}{\ensuremath{P(\w|\mathcal{H})}\xspace}
+\newcommand{\PD}{\ensuremath{P(\D|\mathcal{H})}\xspace}
+\newcommand{\PwIa}{\ensuremath{P(\w|\alpha,\mathcal{H})}\xspace}
+\newcommand{\PDIwb}{\ensuremath{P(\D|\w,\beta,\mathcal{H})}\xspace}
+\newcommand{\PDwab}{\ensuremath{P(\D,\w,\alpha,\beta|\mathcal{H})}\xspace}
+\newcommand{\PDIw}{\ensuremath{P(\D|\w,\mathcal{H})}\xspace}
+\newcommand{\PwID}{\ensuremath{P(\w|\D,\mathcal{H})}\xspace}
+\newcommand{\PwabID}{\ensuremath{P(\w,\alpha,\beta|\D,\mathcal{H})}\xspace}
+
+\newcommand{\PanH}{\ensuremath{P(\alpha)}\xspace}
+\newcommand{\PbnH}{\ensuremath{P(\beta)}\xspace}
+\newcommand{\PabnH}{\ensuremath{P(\alpha,\beta)}\xspace}
+\newcommand{\PwnH}{\ensuremath{P(\w)}\xspace}
+\newcommand{\PDnH}{\ensuremath{P(\D)}\xspace}
+\newcommand{\PwIanH}{\ensuremath{P(\w|\alpha)}\xspace}
+\newcommand{\PDIwbnH}{\ensuremath{P(\D|\w,\beta)}\xspace}
+\newcommand{\PDwabnH}{\ensuremath{P(\D,\w,\Ba,\beta)}\xspace}
+\newcommand{\PDIwnH}{\ensuremath{P(\D|\w)}\xspace}
+\newcommand{\PwIDnH}{\ensuremath{P(\w|\D)}\xspace}
+\newcommand{\PwabIDnH}{\ensuremath{P(\w,\alpha,\beta|\D)}\xspace}
+
+\newcommand{\PDwBab}{\ensuremath{P(\D,\w,\Ba,\beta|\mathcal{H})}\xspace}
+\newcommand{\PwIBa}{\ensuremath{P(\w|\Ba,\mathcal{H})}\xspace}
+\newcommand{\PBab}{\ensuremath{P(\Ba,\beta|\mathcal{H})}\xspace}
+\newcommand{\PwBabID}{\ensuremath{P(\w,\Ba,\beta|\D,\mathcal{H})}\xspace}
+
+\newcommand{\PBanH}{\ensuremath{P(\Ba)}\xspace}
+\newcommand{\PwIBanH}{\ensuremath{P(\w|\Ba)}\xspace}
+
+%% Snakes
+\newcommand{\Esnake}{\ensuremath{\mathit{E_{snake}}}\xspace}
+\newcommand{\Eimage}{\ensuremath{\mathit{E_{image}}}\xspace}
+\newcommand{\Econt}{\ensuremath{\mathit{E_{cont}}}\xspace}
+\newcommand{\Ecurv}{\ensuremath{\mathit{E_{curv}}}\xspace}
+\newcommand{\Eint}{\ensuremath{\mathit{E_{int}}}\xspace}
+\newcommand{\Eext}{\ensuremath{\mathit{E_{ext}}}\xspace}
+\newcommand{\Eterm}{\ensuremath{\mathit{E_{term}}}\xspace}
+\newcommand{\Eline}{\ensuremath{\mathit{E_{line}}}\xspace}
+\newcommand{\Eedge}{\ensuremath{\mathit{E_{edge}}}\xspace}
+\newcommand{\Econ}{\ensuremath{\mathit{E_{con}}}\xspace}
+\newcommand{\Eangle}{\ensuremath{\mathit{E_{angle}}}\xspace}
+\newcommand{\Elshape}{\ensuremath{\mathit{E_{lshape}}}\xspace}
+\newcommand{\Eedgedir}{\ensuremath{\mathit{E_{edgedir}}}\xspace}
+\newcommand{\Emodel}{\ensuremath{\mathit{E_{model}}}\xspace}
+\newcommand{\wte}{\ensuremath{\mathit{w_{term}}}\xspace}
+\newcommand{\wli}{\ensuremath{\mathit{w_{line}}}\xspace}
+\newcommand{\wed}{\ensuremath{\mathit{w_{edge}}}\xspace}
+\newcommand{\wco}{\ensuremath{\mathit{w_{con}}}\xspace}
+
+
+%% Environments
+\newcounter{alg}
+\newenvironment{algorithm}[1]
+{
+    \stepcounter{alg}
+    \begin{table}[htb]
+    \centering
+    \begin{tabular}[t]{ll}
+    \hline&\\
+    \multicolumn{2}{l}{\bf Algorithm \arabic{alg}: #1}\\&\\
+} {
+    &\\
+    \hline
+    \end{tabular}
+    \end{table}
+}
+%</definitions>
+%    \end{macrocode}
+%
+% \subsection{References File}
+%
+%    \begin{macrocode}
+%<*references>
+@MISC{Gunn:2001:pdflatex,
+  author =       {S.R. Gunn},
+  title =        {PDFLaTeX Instructions},
+  year =         {2001},
+  url =          {http://www.ecs.soton.ac.uk/~srg/softwaretools/document/}
+}
+%</references>
+%    \end{macrocode}
+%
+% \subsection{Bibliography Style File}
+%
+%    \begin{macrocode}
+%<*bst>
+%% File: `ecs.bst'
+%% A modification of `plainnat.bst' for use with natbib package
+%%
+%% Copyright 1993-1999 Patrick W Daly
+%% Max-Planck-Institut f\"ur Aeronomie
+%% Max-Planck-Str. 2
+%% D-37191 Katlenburg-Lindau
+%% Germany
+%% E-mail: daly@linmpi.mpg.de
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN
+%% archives in directory macros/latex/base/lppl.txt; either
+%% version 1 of the License, or any later version.
+%%
+%% Includes field URL for Internet addresses
+%%
+ENTRY
+  { address
+    author
+    booktitle
+    chapter
+    edition
+    editor
+    howpublished
+    institution
+    isbn
+    issn
+    journal
+    key
+    month
+    note
+    number
+    organization
+    pages
+    publisher
+    school
+    series
+    title
+    type
+    url
+    volume
+    year
+  }
+  {}
+  { label extra.label sort.label short.list }
+
+INTEGERS { output.state before.all mid.sentence after.sentence after.block }
+
+FUNCTION {init.state.consts}
+{ #0 'before.all :=
+  #1 'mid.sentence :=
+  #2 'after.sentence :=
+  #3 'after.block :=
+}
+
+STRINGS { s t }
+
+FUNCTION {output.nonnull}
+{ 's :=
+  output.state mid.sentence =
+    { ", " * write$ }
+    { output.state after.block =
+        { add.period$ write$
+          newline$
+          "\newblock " write$
+        }
+        { output.state before.all =
+            'write$
+            { add.period$ " " * write$ }
+          if$
+        }
+      if$
+      mid.sentence 'output.state :=
+    }
+  if$
+  s
+}
+
+FUNCTION {output}
+{ duplicate$ empty$
+    'pop$
+    'output.nonnull
+  if$
+}
+
+FUNCTION {output.check}
+{ 't :=
+  duplicate$ empty$
+    { pop$ "empty " t * " in " * cite$ * warning$ }
+    'output.nonnull
+  if$
+}
+
+FUNCTION {fin.entry}
+{ add.period$
+  write$
+  newline$
+}
+
+FUNCTION {new.block}
+{ output.state before.all =
+    'skip$
+    { after.block 'output.state := }
+  if$
+}
+
+FUNCTION {new.sentence}
+{ output.state after.block =
+    'skip$
+    { output.state before.all =
+        'skip$
+        { after.sentence 'output.state := }
+      if$
+    }
+  if$
+}
+
+FUNCTION {not}
+{   { #0 }
+    { #1 }
+  if$
+}
+
+FUNCTION {and}
+{   'skip$
+    { pop$ #0 }
+  if$
+}
+
+FUNCTION {or}
+{   { pop$ #1 }
+    'skip$
+  if$
+}
+
+FUNCTION {new.block.checka}
+{ empty$
+    'skip$
+    'new.block
+  if$
+}
+
+FUNCTION {new.block.checkb}
+{ empty$
+  swap$ empty$
+  and
+    'skip$
+    'new.block
+  if$
+}
+
+FUNCTION {new.sentence.checka}
+{ empty$
+    'skip$
+    'new.sentence
+  if$
+}
+
+FUNCTION {new.sentence.checkb}
+{ empty$
+  swap$ empty$
+  and
+    'skip$
+    'new.sentence
+  if$
+}
+
+FUNCTION {field.or.null}
+{ duplicate$ empty$
+    { pop$ "" }
+    'skip$
+  if$
+}
+
+FUNCTION {emphasize}
+{ duplicate$ empty$
+    { pop$ "" }
+    { "{\em " swap$ * "}" * }
+  if$
+}
+
+INTEGERS { nameptr namesleft numnames }
+
+FUNCTION {format.names}
+{ 's :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { s nameptr "{ff~}{vv~}{ll}{, jj}" format.name$ 't :=
+      nameptr #1 >
+        { namesleft #1 >
+            { ", " * t * }
+            { numnames #2 >
+                { "," * }
+                'skip$
+              if$
+              t "others" =
+                { " et~al." * }
+                { " and " * t * }
+              if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+FUNCTION {format.key}
+{ empty$
+    { key field.or.null }
+    { "" }
+  if$
+}
+
+FUNCTION {format.authors}
+{ author empty$
+    { "" }
+    { author format.names }
+  if$
+}
+
+FUNCTION {format.editors}
+{ editor empty$
+    { "" }
+    { editor format.names
+      editor num.names$ #1 >
+        { ", editors" * }
+        { ", editor" * }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.isbn}
+{ isbn empty$
+    { "" }
+    { new.block "ISBN " isbn * }
+  if$
+}
+
+FUNCTION {format.issn}
+{ issn empty$
+    { "" }
+    { new.block "ISSN " issn * }
+  if$
+}
+
+%FUNCTION {format.url}
+%{ url empty$
+%    { "" }
+%    { new.block "URL \url{" url * "}" * }
+%  if$
+%}
+%
+%FUNCTION {format.title}
+%{ title empty$
+%    { "" }
+%    { title "t" change.case$ }
+%  if$
+%}
+FUNCTION {format.url}
+{ ""
+}
+
+FUNCTION {format.title}
+{ title empty$
+    { "" }
+    { url empty$
+        { title "t" change.case$ }
+        { "\href{" url * "}{" * title "t" change.case$ * "}" * }
+      if$
+    }
+    if$
+}
+
+
+FUNCTION {format.full.names}
+{'s :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { s nameptr
+      "{vv~}{ll}" format.name$ 't :=
+      nameptr #1 >
+        {
+          namesleft #1 >
+            { ", " * t * }
+            {
+              numnames #2 >
+                { "," * }
+                'skip$
+              if$
+              t "others" =
+                { " et~al." * }
+                { " and " * t * }
+              if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+FUNCTION {author.editor.full}
+{ author empty$
+    { editor empty$
+        { "" }
+        { editor format.full.names }
+      if$
+    }
+    { author format.full.names }
+  if$
+}
+
+FUNCTION {author.full}
+{ author empty$
+    { "" }
+    { author format.full.names }
+  if$
+}
+
+FUNCTION {editor.full}
+{ editor empty$
+    { "" }
+    { editor format.full.names }
+  if$
+}
+
+FUNCTION {make.full.names}
+{ type$ "book" =
+  type$ "inbook" =
+  or
+    'author.editor.full
+    { type$ "proceedings" =
+        'editor.full
+        'author.full
+      if$
+    }
+  if$
+}
+
+FUNCTION {output.bibitem}
+{ newline$
+  "\bibitem[" write$
+  label write$
+  ")" make.full.names duplicate$ short.list =
+     { pop$ }
+     { * }
+   if$
+  "]{" * write$
+  cite$ write$
+  "}" write$
+  newline$
+  ""
+  before.all 'output.state :=
+}
+
+FUNCTION {n.dashify}
+{ 't :=
+  ""
+    { t empty$ not }
+    { t #1 #1 substring$ "-" =
+        { t #1 #2 substring$ "--" = not
+            { "--" *
+              t #2 global.max$ substring$ 't :=
+            }
+            {   { t #1 #1 substring$ "-" = }
+                { "-" *
+                  t #2 global.max$ substring$ 't :=
+                }
+              while$
+            }
+          if$
+        }
+        { t #1 #1 substring$ *
+          t #2 global.max$ substring$ 't :=
+        }
+      if$
+    }
+  while$
+}
+
+FUNCTION {format.date}
+{ year duplicate$ empty$
+    { "empty year in " cite$ * warning$
+       pop$ "" }
+    'skip$
+  if$
+  month empty$
+    'skip$
+    { month
+      " " * swap$ *
+    }
+  if$
+  extra.label *
+}
+
+FUNCTION {format.btitle}
+{ title emphasize
+}
+
+FUNCTION {tie.or.space.connect}
+{ duplicate$ text.length$ #3 <
+    { "~" }
+    { " " }
+  if$
+  swap$ * *
+}
+
+FUNCTION {either.or.check}
+{ empty$
+    'pop$
+    { "can't use both " swap$ * " fields in " * cite$ * warning$ }
+  if$
+}
+
+FUNCTION {format.bvolume}
+{ volume empty$
+    { "" }
+    { "volume" volume tie.or.space.connect
+      series empty$
+        'skip$
+        { " of " * series emphasize * }
+      if$
+      "volume and number" number either.or.check
+    }
+  if$
+}
+
+FUNCTION {format.number.series}
+{ volume empty$
+    { number empty$
+        { series field.or.null }
+        { output.state mid.sentence =
+            { "number" }
+            { "Number" }
+          if$
+          number tie.or.space.connect
+          series empty$
+            { "there's a number but no series in " cite$ * warning$ }
+            { " in " * series * }
+          if$
+        }
+      if$
+    }
+    { "" }
+  if$
+}
+
+FUNCTION {format.edition}
+{ edition empty$
+    { "" }
+    { output.state mid.sentence =
+        { edition "l" change.case$ " edition" * }
+        { edition "t" change.case$ " edition" * }
+      if$
+    }
+  if$
+}
+
+INTEGERS { multiresult }
+
+FUNCTION {multi.page.check}
+{ 't :=
+  #0 'multiresult :=
+    { multiresult not
+      t empty$ not
+      and
+    }
+    { t #1 #1 substring$
+      duplicate$ "-" =
+      swap$ duplicate$ "," =
+      swap$ "+" =
+      or or
+        { #1 'multiresult := }
+        { t #2 global.max$ substring$ 't := }
+      if$
+    }
+  while$
+  multiresult
+}
+
+FUNCTION {format.pages}
+{ pages empty$
+    { "" }
+    { pages multi.page.check
+        { "pages" pages n.dashify tie.or.space.connect }
+        { "page" pages tie.or.space.connect }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.vol.num.pages}
+{ volume field.or.null
+  number empty$
+    'skip$
+    { "\penalty0 (" number * ")" * *
+      volume empty$
+        { "there's a number but no volume in " cite$ * warning$ }
+        'skip$
+      if$
+    }
+  if$
+  pages empty$
+    'skip$
+    { duplicate$ empty$
+        { pop$ format.pages }
+        { ":\penalty0 " * pages n.dashify * }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.chapter.pages}
+{ chapter empty$
+    'format.pages
+    { type empty$
+        { "chapter" }
+        { type "l" change.case$ }
+      if$
+      chapter tie.or.space.connect
+      pages empty$
+        'skip$
+        { ", " * format.pages * }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.in.ed.booktitle}
+{ booktitle empty$
+    { "" }
+    { editor empty$
+        { "In " booktitle emphasize * }
+        { "In " format.editors * ", " * booktitle emphasize * }
+      if$
+    }
+  if$
+}
+
+FUNCTION {empty.misc.check}
+{ author empty$ title empty$ howpublished empty$
+  month empty$ year empty$ note empty$
+  and and and and and
+  key empty$ not and
+    { "all relevant fields are empty in " cite$ * warning$ }
+    'skip$
+  if$
+}
+
+FUNCTION {format.thesis.type}
+{ type empty$
+    'skip$
+    { pop$
+      type "t" change.case$
+    }
+  if$
+}
+
+FUNCTION {format.tr.number}
+{ type empty$
+    { "Technical Report" }
+    'type
+  if$
+  number empty$
+    { "t" change.case$ }
+    { number tie.or.space.connect }
+  if$
+}
+
+FUNCTION {format.article.crossref}
+{ key empty$
+    { journal empty$
+        { "need key or journal for " cite$ * " to crossref " * crossref *
+          warning$
+          ""
+        }
+        { "In {\em " journal * "\/}" * }
+      if$
+    }
+    { "In " key * }
+  if$
+  " \citep{" * crossref * "}" *
+}
+
+FUNCTION {format.book.crossref}
+{ volume empty$
+    { "empty volume in " cite$ * "'s crossref of " * crossref * warning$
+      "In "
+    }
+    { "Volume" volume tie.or.space.connect
+      " of " *
+    }
+  if$
+  editor empty$
+  editor field.or.null author field.or.null =
+  or
+    { key empty$
+        { series empty$
+            { "need editor, key, or series for " cite$ * " to crossref " *
+              crossref * warning$
+              "" *
+            }
+            { "{\em " * series * "\/}" * }
+          if$
+        }
+        { key * }
+      if$
+    }
+    'skip$
+  if$
+  ", \citet{" * crossref * "}" *
+}
+
+FUNCTION {format.incoll.inproc.crossref}
+{ editor empty$
+  editor field.or.null author field.or.null =
+  or
+    { key empty$
+        { booktitle empty$
+            { "need editor, key, or booktitle for " cite$ * " to crossref " *
+              crossref * warning$
+              ""
+            }
+            { "In {\em " booktitle * "\/}" * }
+          if$
+        }
+        { "In " key * }
+      if$
+    }
+    { "In " }
+  if$
+  " \citet{" * crossref * "}" *
+}
+
+FUNCTION {article}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  new.block
+  format.title "title" output.check
+  new.block
+  crossref missing$
+    { journal emphasize "journal" output.check
+      format.vol.num.pages output
+      format.date "year" output.check
+    }
+    { format.article.crossref output.nonnull
+      format.pages output
+    }
+  if$
+  format.issn output
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+FUNCTION {book}
+{ output.bibitem
+  author empty$
+    { format.editors "author and editor" output.check
+      editor format.key output
+    }
+    { format.authors output.nonnull
+      crossref missing$
+        { "author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.btitle "title" output.check
+  crossref missing$
+    { format.bvolume output
+      new.block
+      format.number.series output
+      new.sentence
+      publisher "publisher" output.check
+      address output
+    }
+    { new.block
+      format.book.crossref output.nonnull
+    }
+  if$
+  format.edition output
+  format.date "year" output.check
+  format.isbn output
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+FUNCTION {booklet}
+{ output.bibitem
+  format.authors output
+  author format.key output
+  new.block
+  format.title "title" output.check
+  howpublished address new.block.checkb
+  howpublished output
+  address output
+  format.date output
+  format.isbn output
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+FUNCTION {inbook}
+{ output.bibitem
+  author empty$
+    { format.editors "author and editor" output.check
+      editor format.key output
+    }
+    { format.authors output.nonnull
+      crossref missing$
+        { "author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  new.block
+  format.btitle "title" output.check
+  crossref missing$
+    { format.bvolume output
+      format.chapter.pages "chapter and pages" output.check
+      new.block
+      format.number.series output
+      new.sentence
+      publisher "publisher" output.check
+      address output
+    }
+    { format.chapter.pages "chapter and pages" output.check
+      new.block
+      format.book.crossref output.nonnull
+    }
+  if$
+  format.edition output
+  format.date "year" output.check
+  format.isbn output
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+FUNCTION {incollection}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  new.block
+  format.title "title" output.check
+  new.block
+  crossref missing$
+    { format.in.ed.booktitle "booktitle" output.check
+      format.bvolume output
+      format.number.series output
+      format.chapter.pages output
+      new.sentence
+      publisher "publisher" output.check
+      address output
+      format.edition output
+      format.date "year" output.check
+    }
+    { format.incoll.inproc.crossref output.nonnull
+      format.chapter.pages output
+    }
+  if$
+  format.isbn output
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+FUNCTION {inproceedings}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  new.block
+  format.title "title" output.check
+  new.block
+  crossref missing$
+    { format.in.ed.booktitle "booktitle" output.check
+      format.bvolume output
+      format.number.series output
+      format.pages output
+      address empty$
+        { organization publisher new.sentence.checkb
+          organization output
+          publisher output
+          format.date "year" output.check
+        }
+        { address output.nonnull
+          format.date "year" output.check
+          new.sentence
+          organization output
+          publisher output
+        }
+      if$
+    }
+    { format.incoll.inproc.crossref output.nonnull
+      format.pages output
+    }
+  if$
+  format.isbn output
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+FUNCTION {conference} { inproceedings }
+
+FUNCTION {manual}
+{ output.bibitem
+  format.authors output
+  author format.key output
+  new.block
+  format.btitle "title" output.check
+  organization address new.block.checkb
+  organization output
+  address output
+  format.edition output
+  format.date output
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+FUNCTION {mastersthesis}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  new.block
+  format.title "title" output.check
+  new.block
+  "Master's thesis" format.thesis.type output.nonnull
+  school "school" output.check
+  address output
+  format.date "year" output.check
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+FUNCTION {misc}
+{ output.bibitem
+  format.authors output
+  author format.key output
+  title howpublished new.block.checkb
+  format.title output
+  howpublished new.block.checka
+  howpublished output
+  format.date output
+  format.issn output
+  format.url output
+  new.block
+  note output
+  fin.entry
+  empty.misc.check
+}
+
+FUNCTION {phdthesis}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  new.block
+  format.btitle "title" output.check
+  new.block
+  "PhD thesis" format.thesis.type output.nonnull
+  school "school" output.check
+  address output
+  format.date "year" output.check
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+FUNCTION {proceedings}
+{ output.bibitem
+  format.editors output
+  editor format.key output
+  new.block
+  format.btitle "title" output.check
+  format.bvolume output
+  format.number.series output
+  address output
+  format.date "year" output.check
+  new.sentence
+  organization output
+  publisher output
+  format.isbn output
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+FUNCTION {techreport}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  new.block
+  format.title "title" output.check
+  new.block
+  format.tr.number output.nonnull
+  institution "institution" output.check
+  address output
+  format.date "year" output.check
+  format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+FUNCTION {unpublished}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  new.block
+  format.title "title" output.check
+  format.url output
+  new.block
+  note "note" output.check
+  format.date output
+  fin.entry
+}
+
+FUNCTION {default.type} { misc }
+
+
+MACRO {jan} {"January"}
+
+MACRO {feb} {"February"}
+
+MACRO {mar} {"March"}
+
+MACRO {apr} {"April"}
+
+MACRO {may} {"May"}
+
+MACRO {jun} {"June"}
+
+MACRO {jul} {"July"}
+
+MACRO {aug} {"August"}
+
+MACRO {sep} {"September"}
+
+MACRO {oct} {"October"}
+
+MACRO {nov} {"November"}
+
+MACRO {dec} {"December"}
+
+
+
+MACRO {acmcs} {"ACM Computing Surveys"}
+
+MACRO {acta} {"Acta Informatica"}
+
+MACRO {cacm} {"Communications of the ACM"}
+
+MACRO {ibmjrd} {"IBM Journal of Research and Development"}
+
+MACRO {ibmsj} {"IBM Systems Journal"}
+
+MACRO {ieeese} {"IEEE Transactions on Software Engineering"}
+
+MACRO {ieeetc} {"IEEE Transactions on Computers"}
+
+MACRO {ieeetcad}
+ {"IEEE Transactions on Computer-Aided Design of Integrated Circuits"}
+
+MACRO {ipl} {"Information Processing Letters"}
+
+MACRO {jacm} {"Journal of the ACM"}
+
+MACRO {jcss} {"Journal of Computer and System Sciences"}
+
+MACRO {scp} {"Science of Computer Programming"}
+
+MACRO {sicomp} {"SIAM Journal on Computing"}
+
+MACRO {tocs} {"ACM Transactions on Computer Systems"}
+
+MACRO {tods} {"ACM Transactions on Database Systems"}
+
+MACRO {tog} {"ACM Transactions on Graphics"}
+
+MACRO {toms} {"ACM Transactions on Mathematical Software"}
+
+MACRO {toois} {"ACM Transactions on Office Information Systems"}
+
+MACRO {toplas} {"ACM Transactions on Programming Languages and Systems"}
+
+MACRO {tcs} {"Theoretical Computer Science"}
+
+
+READ
+
+FUNCTION {sortify}
+{ purify$
+  "l" change.case$
+}
+
+INTEGERS { len }
+
+FUNCTION {chop.word}
+{ 's :=
+  'len :=
+  s #1 len substring$ =
+    { s len #1 + global.max$ substring$ }
+    's
+  if$
+}
+
+FUNCTION {format.lab.names}
+{ 's :=
+  s #1 "{vv~}{ll}" format.name$
+  s num.names$ duplicate$
+  #2 >
+    { pop$ " et~al." * }
+    { #2 <
+        'skip$
+        { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
+            { " et~al." * }
+            { " and " * s #2 "{vv~}{ll}" format.name$ * }
+          if$
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {author.key.label}
+{ author empty$
+    { key empty$
+        { cite$ #1 #3 substring$ }
+        'key
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {author.editor.key.label}
+{ author empty$
+    { editor empty$
+        { key empty$
+            { cite$ #1 #3 substring$ }
+            'key
+          if$
+        }
+        { editor format.lab.names }
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {author.key.organization.label}
+{ author empty$
+    { key empty$
+        { organization empty$
+            { cite$ #1 #3 substring$ }
+            { "The " #4 organization chop.word #3 text.prefix$ }
+          if$
+        }
+        'key
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {editor.key.organization.label}
+{ editor empty$
+    { key empty$
+        { organization empty$
+            { cite$ #1 #3 substring$ }
+            { "The " #4 organization chop.word #3 text.prefix$ }
+          if$
+        }
+        'key
+      if$
+    }
+    { editor format.lab.names }
+  if$
+}
+
+FUNCTION {calc.short.authors}
+{ type$ "book" =
+  type$ "inbook" =
+  or
+    'author.editor.key.label
+    { type$ "proceedings" =
+        'editor.key.organization.label
+        { type$ "manual" =
+            'author.key.organization.label
+            'author.key.label
+          if$
+        }
+      if$
+    }
+  if$
+  'short.list :=
+}
+
+FUNCTION {calc.label}
+{ calc.short.authors
+  short.list
+  "("
+  *
+  year duplicate$ empty$
+  short.list key field.or.null = or
+     { pop$ "" }
+     'skip$
+  if$
+  *
+  'label :=
+}
+
+FUNCTION {sort.format.names}
+{ 's :=
+  #1 'nameptr :=
+  ""
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { nameptr #1 >
+        { "   " * }
+        'skip$
+      if$
+      s nameptr "{vv{ } }{ll{ }}{  ff{ }}{  jj{ }}" format.name$ 't :=
+      nameptr numnames = t "others" = and
+        { "et al" * }
+        { t sortify * }
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+FUNCTION {sort.format.title}
+{ 't :=
+  "A " #2
+    "An " #3
+      "The " #4 t chop.word
+    chop.word
+  chop.word
+  sortify
+  #1 global.max$ substring$
+}
+
+FUNCTION {author.sort}
+{ author empty$
+    { key empty$
+        { "to sort, need author or key in " cite$ * warning$
+          ""
+        }
+        { key sortify }
+      if$
+    }
+    { author sort.format.names }
+  if$
+}
+
+FUNCTION {author.editor.sort}
+{ author empty$
+    { editor empty$
+        { key empty$
+            { "to sort, need author, editor, or key in " cite$ * warning$
+              ""
+            }
+            { key sortify }
+          if$
+        }
+        { editor sort.format.names }
+      if$
+    }
+    { author sort.format.names }
+  if$
+}
+
+FUNCTION {author.organization.sort}
+{ author empty$
+    { organization empty$
+        { key empty$
+            { "to sort, need author, organization, or key in " cite$ * warning$
+              ""
+            }
+            { key sortify }
+          if$
+        }
+        { "The " #4 organization chop.word sortify }
+      if$
+    }
+    { author sort.format.names }
+  if$
+}
+
+FUNCTION {editor.organization.sort}
+{ editor empty$
+    { organization empty$
+        { key empty$
+            { "to sort, need editor, organization, or key in " cite$ * warning$
+              ""
+            }
+            { key sortify }
+          if$
+        }
+        { "The " #4 organization chop.word sortify }
+      if$
+    }
+    { editor sort.format.names }
+  if$
+}
+
+FUNCTION {presort}
+{ calc.label
+  label sortify
+  "    "
+  *
+  type$ "book" =
+  type$ "inbook" =
+  or
+    'author.editor.sort
+    { type$ "proceedings" =
+        'editor.organization.sort
+        { type$ "manual" =
+            'author.organization.sort
+            'author.sort
+          if$
+        }
+      if$
+    }
+  if$
+  "    "
+  *
+  year field.or.null sortify
+  *
+  "    "
+  *
+  title field.or.null
+  sort.format.title
+  *
+  #1 entry.max$ substring$
+  'sort.label :=
+  sort.label *
+  #1 entry.max$ substring$
+  'sort.key$ :=
+}
+
+ITERATE {presort}
+
+SORT
+
+STRINGS { longest.label last.label next.extra }
+
+INTEGERS { longest.label.width last.extra.num number.label }
+
+FUNCTION {initialize.longest.label}
+{ "" 'longest.label :=
+  #0 int.to.chr$ 'last.label :=
+  "" 'next.extra :=
+  #0 'longest.label.width :=
+  #0 'last.extra.num :=
+  #0 'number.label :=
+}
+
+FUNCTION {forward.pass}
+{ last.label label =
+    { last.extra.num #1 + 'last.extra.num :=
+      last.extra.num int.to.chr$ 'extra.label :=
+    }
+    { "a" chr.to.int$ 'last.extra.num :=
+      "" 'extra.label :=
+      label 'last.label :=
+    }
+  if$
+  number.label #1 + 'number.label :=
+}
+
+FUNCTION {reverse.pass}
+{ next.extra "b" =
+    { "a" 'extra.label := }
+    'skip$
+  if$
+  extra.label 'next.extra :=
+  extra.label
+  duplicate$ empty$
+    'skip$
+    { "{\natexlab{" swap$ * "}}" * }
+  if$
+  'extra.label :=
+  label extra.label * 'label :=
+}
+
+EXECUTE {initialize.longest.label}
+
+ITERATE {forward.pass}
+
+REVERSE {reverse.pass}
+
+FUNCTION {bib.sort.order}
+{ sort.label  'sort.key$ :=
+}
+
+ITERATE {bib.sort.order}
+
+SORT
+
+FUNCTION {begin.bib}
+{   preamble$ empty$
+    'skip$
+    { preamble$ write$ newline$ }
+  if$
+  "\begin{thebibliography}{" number.label int.to.str$ * "}" *
+  write$ newline$
+  "\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi"
+  write$ newline$
+  "\expandafter\ifx\csname url\endcsname\relax" write$ newline$
+  "  \def\url#1{{\tt #1}}\fi" write$ newline$
+}
+
+EXECUTE {begin.bib}
+
+EXECUTE {init.state.consts}
+
+ITERATE {call.type$}
+
+FUNCTION {end.bib}
+{ newline$
+  "\end{thebibliography}" write$ newline$
+}
+
+EXECUTE {end.bib}
+%</bst>
+%    \end{macrocode}
+%
+% \Finale
+%
+\endinput

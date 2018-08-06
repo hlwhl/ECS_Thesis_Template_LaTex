@@ -1,0 +1,41 @@
+%% ----------------------------------------------------------------
+%% Introduction.tex
+%% ---------------------------------------------------------------- 
+\chapter{Introduction} \label{Chapter:Introduction}
+You probably found all the files from \cite{Gunn:2001:pdflatex}.
+\tref{Table:tabex} illustrates the results of my work.
+\begin{table}[!htb]
+  \centering
+  \begin{tabular}{cc}
+  \toprule
+  \textbf{Training Error} & \textbf{Testing Error}\\
+  \midrule
+  0 & $\infty$\\
+  \bottomrule
+  \end{tabular}
+  \caption{The Results}
+  \label{Table:tabex}
+\end{table}
+
+\fref{Figure:figex} shows why this is the case.
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=8cm]{figure}
+  \caption{A colourful picture.}
+  \label{Figure:figex}
+\end{figure}
+
+This page shows you a subfigure example in \fref{Figure:figsubex}.
+\begin{figure}[!htb]
+  \centering
+  \subfigure[The left caption]{
+    \includegraphics[width=4.2cm]{figure}
+    \label{Figure:figsubex:left}
+  }
+  \subfigure[The right caption]{
+    \includegraphics[width=4.2cm]{figure}
+    \label{Figure:figsubex:right}
+  }
+  \caption{A doubly colourful picture.}
+  \label{Figure:figsubex}
+\end{figure}
