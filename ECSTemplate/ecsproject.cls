@@ -62,7 +62,7 @@
 \def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
 \hbox{}
 \thispagestyle{empty}
-\newpage
+
 \if@twocolumn\hbox{}\newpage\fi\fi\fi}
 \usepackage{amsmath,amsfonts,amssymb,amscd,amsthm,xspace}
 \theoremstyle{plain}
@@ -137,30 +137,24 @@
 \examiner    {}
 \degree      {}
 \authors     {}
-\university  {\texorpdfstring{\href{http://www.soton.ac.uk}
+\university  {\texorpdfstring{\href{https://www.southampton.ac.uk}
                 {University of Southampton}}
                 {University of Southampton}}
-\UNIVERSITY  {\texorpdfstring{\href{http://www.soton.ac.uk}
+\UNIVERSITY  {\texorpdfstring{\href{https://www.southampton.ac.uk}
                 {UNIVERSITY OF SOUTHAMPTON}}
                 {UNIVERSITY OF SOUTHAMPTON}}
-\department  {\texorpdfstring{\href{http://www.ecs.soton.ac.uk}
+\department  {\texorpdfstring{\href{https://www.ecs.soton.ac.uk}
                 {School of Electronics and Computer Science}}
                 {School of Electronics and Computer Science}}
-\DEPARTMENT  {\texorpdfstring{\href{http://www.ecs.soton.ac.uk}
+\DEPARTMENT  {\texorpdfstring{\href{https://www.ecs.soton.ac.uk}
                 {SCHOOL OF ELECTRONICS AND COMPUTER SCIENCE}}
                 {SCHOOL OF ELECTRONICS AND COMPUTER SCIENCE}}
-\group       {\texorpdfstring{\href{http://www.isis.ecs.soton.ac.uk}
-                {Image, Speech and Intelligent Systems Group}}
-                {Image, Speech and Intelligent Systems Group}}
-\GROUP       {\texorpdfstring{\href{http://www.isis.ecs.soton.ac.uk}
-                {IMAGE, SPEECH AND INTELLIGENT SYSTEMS GROUP}}
-                {IMAGE, SPEECH AND INTELLIGENT SYSTEMS GROUP}}
-\faculty     {\texorpdfstring{\href{http://www.engineering.soton.ac.uk}
-                {Faculty of Engineering, Science and Mathematics}}
-                {Faculty of Engineering, Science and Mathematics}}
-\FACULTY     {\texorpdfstring{\href{http://www.engineering.soton.ac.uk}
-                {FACULTY OF ENGINEERING, SCIENCE AND MATHEMATICS}}
-                {FACULTY OF ENGINEERING, SCIENCE AND MATHEMATICS}}
+\faculty     {\texorpdfstring{\href{https://www.fpse.soton.ac.uk}
+                {Faculty of Physical Sciences and Engineering}}
+                {Faculty of Physical Sciences and Engineering}}
+\FACULTY     {\texorpdfstring{\href{https://www.fpse.soton.ac.uk}
+                {FACULTY OF PHYSICAL SCIENCE AND ENGINEERING}}
+                {FACULTY OF PHYSICAL SCIENCE AND ENGINEERING}}
 \addresses   {}
 \subject     {}
 \keywords    {}
@@ -177,30 +171,30 @@
     \let \footnote \thanks
     \setcounter{footnote}{0}
     \null\vfil
-    \vskip 60\p@
+    \vskip 10\p@
     \begin{center}
       \setlength{\parskip}{0pt}
       {\large\textbf{\UNIVNAME}\par}
       {\large \facname \par}
       {\large \deptname \par}
+      \vfill\vfill
+      {\large \bf \@title \par}
       \vfill
-      {\large A project report submitted for the}
-      {\large award of \par \degreename \par}
+      {\normalsize by\vfill \authornames \par}
       \vfill
+      {\normalsize \@date \par}
+      \vfill \vfill \vfill \vfill
       {\normalsize Supervisor: \supname \par}
       {\normalsize Examiner: \examname \par}
       \vfill
-      \hspace{6mm}\parbox[t][51mm][s]{89mm}{
+      \parbox[t][51mm][s]{120mm}{
         \center
         \vfill
-        {\large \bf \@title \par}
-        \vfill
-        {\normalsize by \authornames \par}
-        \vfill
-        {\normalsize \@date \par}
+        {\small A dissertation submitted in partial fulfilment of the degree of}
+        {\large  \par \degreename \par}
         \vfill
       }
-      \parbox[t][95mm][s]{89mm}{}
+      \parbox[t][95mm][s]{200mm}{}
     \end{center}
     \par
     \@thanks
@@ -212,12 +206,11 @@
   \global\let\@thanks\@empty
   \global\let\@author\@empty
   \global\let\@date\@empty
-  \global\let\@title\@empty
+  % \global\let\@title\@empty
   \global\let\title\relax
   \global\let\author\relax
   \global\let\date\relax
   \global\let\and\relax
-  \cleardoublepage
 }
 \newenvironment{abstract}
 {
@@ -233,7 +226,7 @@
     {\normalsize \FACNAME \par}
     {\normalsize \DEPTNAME \par}
     \bigskip
-    {\normalsize \underline{A project report submitted for the award of \degreename}\par}
+    {\normalsize \underline{A dissertation submitted in partial fulfilment of the degree of \degreename}\par}
     \bigskip
     {\normalsize\bf \@title \par}
     \medskip
@@ -265,9 +258,10 @@
            \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}
     \@starttoc{toc}
     \if@restonecol\twocolumn\fi
-   \cleardoublepage
+
 }\end{spacing}
 }
+
 \renewcommand\listoffigures{
 \btypeout{List of Figures}
 \begin{spacing}{1}{
@@ -282,9 +276,10 @@
               {\MakeUppercase\listfigurename}}
     \@starttoc{lof}
     \if@restonecol\twocolumn\fi
-    \cleardoublepage
+
 }\end{spacing}
 }
+
 \renewcommand\listoftables{
 \btypeout{List of Tables}
 \begin{spacing}{1}{
@@ -299,7 +294,6 @@
           \MakeUppercase\listtablename}{\MakeUppercase\listtablename}}
     \@starttoc{lot}
     \if@restonecol\twocolumn\fi
-    \cleardoublepage
 }\end{spacing}
 }
 \newcommand\listsymbolname{List of Symbols}
